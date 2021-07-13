@@ -24,13 +24,22 @@ table {
 }
 th {
   color: #000;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-th,
+.sun{
+  color: red;
+}
+.sat{
+  color: blue;
+}
+
 td {
   border: 1px solid #ddd;
   padding-top: 10px;
   padding-bottom: 10px;
-  text-align: center;
+  text-align: left;
+  padding-bottom: 65px;
 }
 /*日曜日*/
 td:first-child {
@@ -46,8 +55,8 @@ td.disabled {
 }
 /*本日*/
 td.today {
-  background-color: #d65e72;
-  color: #fff;
+  background-color: #b7e3ecb6;
+  color: black;
 }
 
 /*ボタン*/
@@ -56,17 +65,17 @@ td.today {
 }
 #next-prev-button button {
   cursor: pointer;
-  background: #b78d4a;
+  background: #39a02b;
   color: #fff;
-  border: 1px solid #b78d4a;
+  border: 1px solid #39a02b;
   border-radius: 4px;
   font-size: 1rem;
   padding: 0.5rem 2rem;
   margin: 1rem 0;
 }
 #next-prev-button button:hover {
-  background-color: #d4bb92;
-  border-color: #d4bb92;
+  background-color: #a0bd9c;
+  border-color: #a0bd9c;
 }
 #prev {
   float: left;

@@ -6,6 +6,7 @@ var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 // 初期表示
 window.onload = function () {
   showProcess(today, calendar);
+ 
 };
 // 前の月表示
 function prev() {
@@ -35,7 +36,15 @@ function createProcess(year, month) {
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
   for (var i = 0; i < week.length; i++) {
-    calendar += "<th>" + week[i] + "</th>";
+    if (i==0){
+      calendar += "<th class='sun'>" + week[i] + "</th>";
+    }
+    else if (i==6){
+      calendar += "<th class='sat'>" + week[i] + "</th>";
+    }
+    else{
+      calendar += "<th>" + week[i] + "</th>";
+    }
   }
   calendar += "</tr>";
 
@@ -72,7 +81,17 @@ function createProcess(year, month) {
           month == today.getMonth() &&
           count == today.getDate()
         ) {
-          calendar += "<td class='today'>" + count + "</td>";
+          var request = new XMLHttpRequest();
+ 
+          request.open('GET', 'https://weather.tsukumijima.net/api/forecast/city/400040', true);
+          request.responseType = 'json';
+       
+          
+            var data = this.response;
+            console.log(data);
+       
+          request.send();
+          calendar += "<td class='today'>" + count + data.forecasts[0].telop + "</td>";
         } else {
           calendar += "<td>" + count + "</td>";
         }
