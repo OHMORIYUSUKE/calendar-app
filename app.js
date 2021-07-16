@@ -3,46 +3,64 @@ const today = new Date();
 // 月末だとずれる可能性があるため、1日固定で取得
 var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
+// APIで天気情報を取得している。
+const callApi = async () => {
+  const response = await fetch(
+    "https://weather.tsukumijima.net/api/forecast/city/400040"
+  );
+  const data = await response.json();
+  return data;
+};
+
 // 初期表示
 window.onload = function () {
-  showProcess(today, calendar);
- 
+  // APIからデータを取得したら19-20行目が実行される。
+  callApi().then((result) => {
+    const wethersList = result.forecasts[0].telop;
+    showProcess(today, wethersList);
+  });
 };
+
 // 前の月表示
 function prev() {
-  showDate.setMonth(showDate.getMonth() - 1);
-  showProcess(showDate);
+  // APIからデータを取得したら27-29行目が実行される。
+  callApi().then((result) => {
+    showDate.setMonth(showDate.getMonth() - 1);
+    const wethersList = result.forecasts[0].telop;
+    showProcess(showDate, wethersList);
+  });
 }
 
 // 次の月表示
 function next() {
-  showDate.setMonth(showDate.getMonth() + 1);
-  showProcess(showDate);
+  // APIからデータを取得したら37-39行目が実行される。
+  callApi().then((result) => {
+    showDate.setMonth(showDate.getMonth() + 1);
+    const wethersList = result.forecasts[0].telop;
+    showProcess(showDate, wethersList);
+  });
 }
 
 // カレンダー表示
-function showProcess(date) {
+function showProcess(date, wethersList) {
   var year = date.getFullYear();
   var month = date.getMonth();
   document.querySelector("#header").innerHTML =
     year + "年 " + (month + 1) + "月";
-
-  var calendar = createProcess(year, month);
+  var calendar = createProcess(year, month, wethersList);
   document.querySelector("#calendar").innerHTML = calendar;
 }
 
 // カレンダー作成
-function createProcess(year, month) {
+function createProcess(year, month, wethersList) {
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
   for (var i = 0; i < week.length; i++) {
-    if (i==0){
+    if (i == 0) {
       calendar += "<th class='sun'>" + week[i] + "</th>";
-    }
-    else if (i==6){
+    } else if (i == 6) {
       calendar += "<th class='sat'>" + week[i] + "</th>";
-    }
-    else{
+    } else {
       calendar += "<th>" + week[i] + "</th>";
     }
   }
@@ -50,13 +68,9 @@ function createProcess(year, month) {
 
   var count = 0;
   var startDayOfWeek = new Date(year, month, 1).getDay();
-  console.log(startDayOfWeek);
   var endDate = new Date(year, month + 1, 0).getDate();
-  console.log(endDate);
   var lastMonthEndDate = new Date(year, month, 0).getDate();
-  console.log(lastMonthEndDate);
   var row = Math.ceil((startDayOfWeek + endDate) / week.length);
-  console.log(row);
 
   // 1行ずつ設定
   for (var i = 0; i < row; i++) {
@@ -81,17 +95,8 @@ function createProcess(year, month) {
           month == today.getMonth() &&
           count == today.getDate()
         ) {
-          var request = new XMLHttpRequest();
- 
-          request.open('GET', 'https://weather.tsukumijima.net/api/forecast/city/400040', true);
-          request.responseType = 'json';
-       
-          
-            var data = this.response;
-            console.log(data);
-       
-          request.send();
-          calendar += "<td class='today'>" + count + data.forecasts[0].telop + "</td>";
+          calendar +=
+            "<td class='today'>" + count + "</br>" + wethersList + "</td>";
         } else {
           calendar += "<td>" + count + "</td>";
         }
