@@ -16,8 +16,8 @@ const callApi = async () => {
 window.onload = function () {
   // APIからデータを取得したら19-20行目が実行される。
   callApi().then((result) => {
-    const wethersList = result.forecasts[0].telop;
-    showProcess(today, wethersList);
+    const weathersList = result.forecasts[0].telop;
+    showProcess(today, weathersList);
   });
 };
 
@@ -26,8 +26,8 @@ function prev() {
   // APIからデータを取得したら27-29行目が実行される。
   callApi().then((result) => {
     showDate.setMonth(showDate.getMonth() - 1);
-    const wethersList = result.forecasts[0].telop;
-    showProcess(showDate, wethersList);
+    const weathersList = result.forecasts[0].telop;
+    showProcess(showDate, weathersList);
   });
 }
 
@@ -36,23 +36,23 @@ function next() {
   // APIからデータを取得したら37-39行目が実行される。
   callApi().then((result) => {
     showDate.setMonth(showDate.getMonth() + 1);
-    const wethersList = result.forecasts[0].telop;
-    showProcess(showDate, wethersList);
+    const weathersList = result.forecasts[0].telop;
+    showProcess(showDate, weathersList);
   });
 }
 
 // カレンダー表示
-function showProcess(date, wethersList) {
+function showProcess(date, weathersList) {
   var year = date.getFullYear();
   var month = date.getMonth();
   document.querySelector("#header").innerHTML =
     year + "年 " + (month + 1) + "月";
-  var calendar = createProcess(year, month, wethersList);
+  var calendar = createProcess(year, month, weathersList);
   document.querySelector("#calendar").innerHTML = calendar;
 }
 
 // カレンダー作成
-function createProcess(year, month, wethersList) {
+function createProcess(year, month, weathersList) {
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
   for (var i = 0; i < week.length; i++) {
@@ -96,7 +96,7 @@ function createProcess(year, month, wethersList) {
           count == today.getDate()
         ) {
           calendar +=
-            "<td class='today'>" + count + "</br>" + wethersList + "</td>";
+            "<td class='today'>" + count + "</br>" + weathersList + "</td>";
         } else {
           calendar += "<td>" + count + "</td>";
         }
