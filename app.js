@@ -5,8 +5,10 @@ var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
 // APIで天気情報を取得している。
 const callApi = async () => {
+  let element = document.getElementById('myselect');
+  console.log(element.value);
   const response = await fetch(
-    "https://weather.tsukumijima.net/api/forecast/city/400040"
+    "https://weather.tsukumijima.net/api/forecast/city/"+element.value
   );
   const data = await response.json();
   return data;
@@ -53,6 +55,18 @@ function showProcess(date, weathersList) {
 
 // カレンダー作成
 function createProcess(year, month, weathersList) {
+  console.log(weathersList);
+  let weatherImage = "";
+  switch(weathersList){
+    case "曇り":
+      weatherImage = "images/cloud.png";
+      break;
+    case "晴れ":
+      weatherImage = "images/sun.png";
+      break;
+      default:
+        weatherImage = "画像がありません";
+  }
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
   for (var i = 0; i < week.length; i++) {
@@ -96,7 +110,7 @@ function createProcess(year, month, weathersList) {
           count == today.getDate()
         ) {
           calendar +=
-            "<td class='today'>" + count + "</br>" + weathersList + "</td>";
+            "<td class='today'>" + count + "</br>" +`<img alt="${weatherImage}" class="weatherImage" src=${weatherImage}>` + "</td>";
         } else {
           calendar += "<td>" + count + "</td>";
         }
@@ -106,3 +120,8 @@ function createProcess(year, month, weathersList) {
   }
   return calendar;
 }
+// 道北　"稚内" id="011000" "旭川" id="012010" "留萌" id="012020"
+// 道東　"網走" id="013010" "北見" id="013020" "紋別" id="013030" "根室" id="014010" "釧路" id="014020" "帯広" id="014030"
+// 道南　"室蘭" id="015010" "浦河" id="015020"
+// 道央　"札幌" id="016010" "岩見沢" id="016020" "倶知安" id="016030"
+// 道南　"函館" id="017010" "江差" id="017020"
