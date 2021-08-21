@@ -1,3 +1,12 @@
+// ボタン押されたら実行
+function onButtonClick() {
+  target = document.getElementById("output");
+  combo1 = document.getElementById("myselect");
+  const weathersList=callApi()
+  next()
+  prev()
+} 
+
 const week = ["日", "月", "火", "水", "木", "金", "土"];
 const today = new Date();
 // 月末だとずれる可能性があるため、1日固定で取得
@@ -7,9 +16,11 @@ var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 const callApi = async () => {
   let element = document.getElementById('myselect');
   console.log(element.value);
+
   const response = await fetch(
     "https://weather.tsukumijima.net/api/forecast/city/"+element.value
   );
+
   const data = await response.json();
   console.log(data)
   return data;
@@ -19,8 +30,13 @@ const callApi = async () => {
 window.onload = function () {
   // APIからデータを取得したら19-20行目が実行される。
   callApi().then((result) => {
-    const weathersList = result.forecasts[0].telop;
+    // .forecasts[0].telop;
+    const weathersList = result;
     showProcess(today, weathersList);
+  })
+  .catch((e)=>{
+    console.log(e);
+    window.alert("天気の情報が取得できませんでした");
   });
 };
 
@@ -29,7 +45,7 @@ function prev() {
   // APIからデータを取得したら27-29行目が実行される。
   callApi().then((result) => {
     showDate.setMonth(showDate.getMonth() - 1);
-    const weathersList = result.forecasts[0].telop;
+    const weathersList = result;
     showProcess(showDate, weathersList);
   });
 }
@@ -39,10 +55,12 @@ function next() {
   // APIからデータを取得したら37-39行目が実行される。
   callApi().then((result) => {
     showDate.setMonth(showDate.getMonth() + 1);
-    const weathersList = result.forecasts[0].telop;
+    const weathersList = result;
     showProcess(showDate, weathersList);
   });
 }
+
+console.log(callApi())
 
 // カレンダー表示
 function showProcess(date, weathersList) {
@@ -57,16 +75,38 @@ function showProcess(date, weathersList) {
 // カレンダー作成
 function createProcess(year, month, weathersList) {
   console.log(weathersList);
-  let weatherImage = "";
-  switch(weathersList){
+  let weatherImage1 = "";
+  switch(weathersList.forecasts[0].telop){
     case "曇り":
-      weatherImage = "images/cloud.png";
+      weatherImage1 = "images/cloud.png";
       break;
     case "晴れ":
-      weatherImage = "images/sun.png";
+      weatherImage1 = "images/sun.png";
       break;
       default:
-        weatherImage = "";
+        weatherImage1 = "";
+  }
+  let weatherImage2 = "";
+  switch(weathersList.forecasts[1].telop){
+    case "曇り":
+      weatherImage2 = "images/cloud.png";
+      break;
+    case "晴れ":
+      weatherImage2 = "images/sun.png";
+      break;
+      default:
+        weatherImage2 = "";
+  }
+  let weatherImage3 = "";
+  switch(weathersList.forecasts[2].telop){
+    case "曇り":
+      weatherImage3 = "images/cloud.png";
+      break;
+    case "晴れ":
+      weatherImage3 = "images/sun.png";
+      break;
+      default:
+        weatherImage3 = "";
   }
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
@@ -111,8 +151,23 @@ function createProcess(year, month, weathersList) {
           count == today.getDate()
         ) {
           calendar +=
-            "<td class='today'>" + count + "</br>" +`<img alt="${weatherImage}" class="weatherImage" src=${weatherImage}>` + "</td>";
-        } else {
+            "<td class='today'>" + count + "</br>" +`<img alt="${weatherImage1}" class="weatherImage" src=${weatherImage1}>` + "</td>";
+        }else if(
+          year == today.getFullYear() &&
+          month == today.getMonth() &&
+          count == today.getDate() + 1
+        ) {
+          calendar +=
+            "<td>" + count + "</br>" +`<img alt="${weatherImage2}" class="weatherImage" src=${weatherImage2}>` + "</td>";
+        }else if(
+          year == today.getFullYear() &&
+          month == today.getMonth() &&
+          count == today.getDate() + 2
+        ) {
+          calendar +=
+            "<td>" + count + "</br>" +`<img alt="${weatherImage3}" class="weatherImage" src=${weatherImage3}>` + "</td>";
+        }
+        else {
           calendar += "<td>" + count + "</td>";
         }
       }
