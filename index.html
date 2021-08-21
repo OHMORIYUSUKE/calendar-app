@@ -26,7 +26,19 @@
       </div>
 
       <!-- カレンダー -->
-      <div id="calendar"></div>
+      <div id="calendar">
+        <script src="./app.js"></script>
+      </div>
+
+      <script type="text/javascript" language="javascript">
+      function onButtonClick() {
+        target = document.getElementById("output");
+        combo1 = document.getElementById("myselect");
+        callApi()
+        
+  }
+      
+    </script>
       <label for="fruit">地域を選択してください</label>
       <select id="myselect">
         <option value="011000">稚内</option>
@@ -45,9 +57,13 @@
         <option value="016030">倶知安</option>
         <option value="017010">函館</option>
         <option value="017020">江差</option>
-        </select>
+      </select>
+      <input type="button" value="Exec" onclick="onButtonClick();" />  
+
+        
     </div>
-    <script src="./app.js"></script>
+ 
+    
 
   </body>
 </html>

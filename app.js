@@ -11,6 +11,7 @@ const callApi = async () => {
     "https://weather.tsukumijima.net/api/forecast/city/"+element.value
   );
   const data = await response.json();
+  console.log(data)
   return data;
 };
 
@@ -65,7 +66,7 @@ function createProcess(year, month, weathersList) {
       weatherImage = "images/sun.png";
       break;
       default:
-        weatherImage = "画像がありません";
+        weatherImage = "";
   }
   // 曜日
   var calendar = "<table><tr class='dayOfWeek'>";
